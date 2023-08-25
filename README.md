@@ -40,10 +40,11 @@ Returns the encrypted private key for the given address in plain text.
 
 Creates a new wallet and returns the encrypted private key for the given address in plain text.
 ##### note - does accept pneumaticon phrases.
+##### Can send a encrypted private key from @ideadesignmedia/helpers{encrypt} function using the same unique encryption key.
 #### Request Body JSON
 ```json
 {
-    "privateKey": "0x000000000000000000000000000000000000000000000000000000000000"
+    "privateKey": "0x0000000000000000000000000000000000000000000000000000000000000000"
 }
 ```
 

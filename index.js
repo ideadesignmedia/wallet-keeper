@@ -43,9 +43,24 @@ app.get('/wallet/:address', (req, res) => {
         res.status(500).json({ error: 'internal server error' })
     })
 })
+const testPrivateKey = privateKey => {
+    try {
+        if (!/ /.test(privateKey) && !/^(0x)?[0-9a-f]{64}$/i.test(privateKey)) {
+            const key = decryptWallet(privateKey)
+            const wallet =  / /.test(key) ? new ethers.Wallet.fromMnemonic(key) : new ethers.Wallet(key)
+            if (!isAddress(wallet.address)) return false
+            return key
+        }
+        return privateKey
+    } catch {
+        return false
+    }
+}
 app.post('/wallet', (req, res) => {
-    const { privateKey } = req.body
-    if (!privateKey) return res.status(400).json({ error: 'privateKey is required' })
+    const { privateKey: userProvided } = req.body
+    if (!userProvided) return res.status(400).json({ error: 'privateKey is required' })
+    const privateKey = testPrivateKey(userProvided)
+    if (!privateKey) return res.status(400).json({ error: 'invalid privateKey' })
     const wallet = !privateKey ? null : / /.test(privateKey) ? new ethers.Wallet.fromMnemonic(privateKey) : new ethers.Wallet(privateKey)
     new Wallet().find({ privateKey }).then(exists => {
         if (exists) return res.status(200).json({ error: false, address: exists.address })
