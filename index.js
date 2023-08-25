@@ -11,7 +11,7 @@ const { Wallet } = makeModels(db, [
         }
     }
 ])
-const { encrypt, decrypt } = require('@ideadesignmedia/helpers')
+const { encrypt, decrypt } = require('@ideadesignmedia/encryption')
 const encryptWallet = (wallet) => {
     return encrypt(JSON.stringify(wallet), process.env.ENCRYPTION_KEY, process.env.ENCRYPTION_IV)
 }

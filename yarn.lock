@@ -382,6 +382,11 @@
     form-data "^4.0.0"
     solc "^0.8.17"
 
+"@ideadesignmedia/encryption@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@ideadesignmedia/encryption/-/encryption-1.0.2.tgz#c749ed937ea0a079c9e7206af504b0097500e07e"
+  integrity sha512-ax/HtLHssy5hIWF3E3PA608QAoJYJxiyg28jVIg2T3WUiQCC1p9IyAEUaRCbymaCh2ffasP6Aa18ENUFDSJd6g==
+
 "@ideadesignmedia/helpers@^1.0.12", "@ideadesignmedia/helpers@^1.0.16":
   version "1.0.16"
   resolved "https://registry.yarnpkg.com/@ideadesignmedia/helpers/-/helpers-1.0.16.tgz#102474d0a4af524321bd9262b448ab60d12ca11d"

@@ -35,13 +35,13 @@ or
 ### GET /wallet/:address
 
 Returns the encrypted private key for the given address in plain text.
-##### Decrypt using the @ideadesignmedia/helpers{decrypt} function using the same unique encryption key.
+##### Decrypt using the @ideadesignmedia/encryption{decrypt} function using the same unique encryption key.
 
 ### POST /wallet - include content-type: application/json header.
 
 Creates a new wallet and returns the encrypted private key for the given address in plain text.
 ##### note - does accept pneumaticon phrases.
-##### Can send a encrypted private key from @ideadesignmedia/helpers{encrypt} function using the same unique encryption key.
+##### Can send a encrypted private key from @ideadesignmedia/encryption{encrypt} function using the same unique encryption key.
 #### Request Body JSON
 ```json
 {
