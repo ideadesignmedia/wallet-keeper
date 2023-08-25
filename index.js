@@ -13,10 +13,10 @@ const { Wallet } = makeModels(db, [
 ])
 const { encrypt, decrypt } = require('@ideadesignmedia/helpers')
 const encryptWallet = (wallet) => {
-    return encrypt(JSON.stringify(wallet), process.env.ENCRYPTION_KEY)
+    return encrypt(JSON.stringify(wallet), process.env.ENCRYPTION_KEY, process.env.ENCRYPTION_IV)
 }
 const decryptWallet = (wallet) => {
-    return decrypt(wallet, process.env.ENCRYPTION_KEY)
+    return decrypt(wallet, process.env.ENCRYPTION_KEY, process.env.ENCRYPTION_IV)
 }
 const app = require("express").Router()
 const isAddress = (address) => {
