@@ -16,7 +16,7 @@ const encryptWallet = (wallet) => {
     return encrypt(JSON.stringify(wallet), process.env.ENCRYPTION_KEY)
 }
 const decryptWallet = (wallet) => {
-    return JSON.parse(decrypt(wallet, process.env.ENCRYPTION_KEY))
+    return decrypt(wallet, process.env.ENCRYPTION_KEY)
 }
 const app = require("express").Router()
 const isAddress = (address) => {
