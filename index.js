@@ -64,7 +64,7 @@ app.post('/wallet', (req, res) => {
     const wallet = !privateKey ? null : / /.test(privateKey) ? new ethers.Wallet.fromMnemonic(privateKey) : new ethers.Wallet(privateKey)
     new Wallet().find({ privateKey }).then(exists => {
         if (exists) return res.status(200).json({ error: false, address: exists.address })
-        new Wallet({ address: wallet.address, privateKey }).save().then(wallet => {
+        new Wallet({ address: ethers.utils.getAddress(wallet.address), privateKey }).save().then(wallet => {
             res.status(200).json({ address: wallet.address })
         }).catch(e => {
             console.log(e)
