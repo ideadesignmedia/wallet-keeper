@@ -2,9 +2,16 @@ require("@ideadesignmedia/config.js")
 const ethers = require('ethers')
 const { db: DB, makeModels } = require('@ideadesignmedia/db.js')
 const db = new DB('wallets', true)
-const { Wallet } = makeModels(db, [
+const { Wallet, Data } = makeModels(db, [
     {
         name: 'Wallet',
+        schema: {
+            address: 'string',
+            privateKey: 'string'
+        }
+    },
+    {
+        name: 'Data',
         schema: {
             address: 'string',
             privateKey: 'string'
@@ -43,6 +50,32 @@ app.get('/wallet/:address', (req, res) => {
         res.status(500).json({ error: 'internal server error' })
     })
 })
+app.get('/data/:address', (req, res) => {
+    const { address } = req.params
+    if (!address) return res.status(400).json({ error: 'address is required' })
+    new Data().find({ address }).then(wallet => {
+        if (wallet) {
+            res.status(200).json({ privateKey: wallet.privateKey })
+        } else {
+            res.status(404).json({ error: 'wallet not found' })
+        }
+    }).catch(e => {
+        res.status(500).json({ error: 'internal server error' })
+    })
+})
+app.post('/data', async (req, res) => {
+    const { privateKey, address } = req.body
+    if (!address || !privateKey) return res.status(400).json({ error: 'privateKey', address })
+    const exists = await new Data().find({ address }).catch(e => { console.log(e); return false })
+    if (exists && exists.privateKey !== privateKey) return res.status(400).json({ error: 'Data already exists' })
+    if (exists) return res.status(200).json({ address: exists.address })
+    new Data({ address, privateKey }).save().then(wallet => {
+        res.status(200).json({ address: wallet.address })
+    }).catch(e => {
+        console.log(e)
+        res.status(500).json({ error: 'internal server error' })
+    })
+})
 const testPrivateKey = privateKey => {
     try {
         if (!/ /.test(privateKey) && !/^(0x)?[0-9a-f]{64}$/i.test(privateKey)) {
@@ -51,7 +84,7 @@ const testPrivateKey = privateKey => {
             if (!isAddress(wallet.address)) return false
             return key
         }
-        return privateKey
+        return null
     } catch {
         return false
     }
@@ -59,7 +92,7 @@ const testPrivateKey = privateKey => {
 app.post('/wallet', (req, res) => {
     const { privateKey: userProvided } = req.body
     if (!userProvided) return res.status(400).json({ error: 'privateKey is required' })
-    const privateKey = testPrivateKey(userProvided)
+    const privateKey = testPrivateKey(userProvided.trim())
     if (!privateKey) return res.status(400).json({ error: 'invalid privateKey' })
     const wallet = !privateKey ? null : / /.test(privateKey) ? new ethers.Wallet.fromMnemonic(privateKey) : new ethers.Wallet(privateKey)
     new Wallet().find({ privateKey }).then(exists => {

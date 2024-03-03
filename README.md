@@ -34,14 +34,18 @@ or
 
 ### GET /wallet/:address
 
-Returns the decrypted public key for the given address in plain text.
-##### Decrypt using the @ideadesignmedia/encryption{decrypt} function using the same unique encryption key.
+#### Returns
+```json
+{
+    "address": "0x"
+}
+```
 
 ### POST /wallet - include content-type: application/json header.
 
 Creates a new wallet and returns the encrypted private key for the given address in plain text.
 ##### note - does accept pneumaticon phrases.
-##### Can send a encrypted private key from @ideadesignmedia/encryption{encrypt} function using the same unique encryption key.
+##### Can send a encrypted private key from @ideadesignmedia/encryption{encrypt} function using the same unique encryption key used by the server.
 #### Request Body JSON
 ```json
 {
@@ -53,5 +57,27 @@ Creates a new wallet and returns the encrypted private key for the given address
 ```json
 {
     "address": "0x0000000000000000000000000000000000000000"
+}
+```
+
+### GET /data/:address
+
+Returns the data stored for the given address.
+
+### POST /data - include content-type: application/json header.
+
+Stores data for the given address is seperate from the wallet data.
+##### this is to store wallet data that is not encrypted with the encryption key used by the server.
+```json
+{
+    "address": "0x00000000",
+    "privateKey": "0afdjl"
+}
+```
+
+#### Returns
+```json
+{
+    "address": "0x00000000"
 }
 ```
